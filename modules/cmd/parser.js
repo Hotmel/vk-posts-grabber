@@ -33,11 +33,10 @@ module.exports = (bot, request) => {
           text += '_____\n\n';
           text += `Пользователь пишет: «${item.text}»`;
           text += '\n_____\n\n'; 
-        }       
+        }   
+
         text += item.copy_history[0].text;
       }
-
-      console.log(text);
 
       attachments.forEach(attach => {
         var type = attach.type; // Определяем тип
