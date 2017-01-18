@@ -1,0 +1,26 @@
+{
+  "name": "vkpostsgrabber",
+  "version": "0.1.0",
+  "description": "Репост постов из ВК в Телеграм.",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bifot/VKPostsGrabber.git"
+  },
+  "keywords": [
+    "vk"
+  ],
+  "author": "Mikhail Semin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bifot/VKPostsGrabber/issues"
+  },
+  "homepage": "https://github.com/bifot/VKPostsGrabber#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.25.0",
+    "sync-request": "^4.0.1"
+  }
+}
