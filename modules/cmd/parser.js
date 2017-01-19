@@ -130,7 +130,6 @@ module.exports = (bot, request) => {
 
                 message += `\n\n${video}`;
               } else if (type == 'doc') {
-                var url = file.url.split('?')[0];
                 linksToAttachments.push(file.url); // Пушим остальные документы
               }
             });
