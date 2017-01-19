@@ -14,39 +14,52 @@ module.exports = (bot, request) => {
         var json = JSON.parse(body);
 
         if (!error && response.statusCode == 200 && json.response) {
-          var group = json.response.groups[0];
-          var groupName = group.name;
-          var groupId = group.id;
           var item = json.response.items[0];
           var date = item.date;
           var isRepost = item.copy_history || 0;
           var linksToAttachmentsPhoto = [];
           var linksToAttachmentsLink = [];
           var linksToAttachments = [];
-          var message;
           var bigMessage = [];
+          var message;
 
           try {
             var text = item.text || item.copy_history[0].text;
+            var group = json.response.groups[0];
+            var groupName = group.name;
+            var groupId = group.id;
             var ownerPost = `ℹ️ пост из <a href="https://vk.com/club${groupId}">${groupName}</a>\n\n`;
 
             // Проверяем репост
             if (isRepost) {
               var profile = json.response.profiles[0];
-              var userName = `${profile.first_name} ${profile.last_name}`;
-              var userId = profile.id;
-              var linkToUser = `<a href="https://vk.com/${userId}">${userName}</a>`;
 
-              text = `↪️ ${linkToUser} репостул\n\n`;
+              // Смотрим, кто сделал репост: пользователь или сообщество
+              if (profile) {
+                var userName = `${profile.first_name} ${profile.last_name}`;
+                var userId = profile.id;
+                var linkToUser = `<a href="https://vk.com/${userId}">${userName}</a>`;
 
-              // Текст к репосту, если есть, то записываем
-              if (item.text) {
-                text += '_____\n\n';
-                text += `Пользователь пишет: «${item.text}»`;
-                text += '\n_____\n\n';
+                text = `↪️ ${linkToUser} репостул\n\n`;
+
+                // Текст к репосту, если есть, то записываем
+                if (item.text) {
+                  text += `${item.text}`;
+                  text += '\n_____\n';                
+                }
+
+                text += item.copy_history[0].text;
+              } else if (group) {           
+                text = `↪️ сообщество репостуло (реклама)\n\n`;
+
+                // Текст к репосту, если есть, то записываем
+                if (item.text) {
+                  text += `${item.text}`;
+                  text += '\n_____\n';                
+                }
+
+                text += item.copy_history[0].text;
               }
-
-              text += item.copy_history[0].text;
             }
 
             // Находим ссылки с ВК-разметкой
