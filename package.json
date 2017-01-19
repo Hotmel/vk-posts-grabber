@@ -21,6 +21,6 @@
   "homepage": "https://github.com/bifot/VKPostsGrabber#readme",
   "dependencies": {
     "node-telegram-bot-api": "^0.25.0",
-    "sync-request": "^4.0.1"
+    "request": "^2.79.0",
   }
 }

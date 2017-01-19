@@ -1,5 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
-const request = require('sync-request');
+const request = require('request');
 const config = require('./config');
 
 const token = config.token;
@@ -7,6 +7,7 @@ const token = config.token;
 const bot = new TelegramBot(token, { polling: true });
 
 const start = require('./modules/cmd/start')(bot);
+const help = require('./modules/cmd/help')(bot);
 const parser = require('./modules/cmd/parser')(bot, request);
 
 bot.on('message', msg => {
@@ -14,6 +15,8 @@ bot.on('message', msg => {
 
   if (msg.text == '/start') {
     start.cmd(msg);
+  } else if (msg.text == '/help') {
+    help.cmd(msg);
   } else {
     parser.cmd(msg);
   }
