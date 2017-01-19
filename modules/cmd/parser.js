@@ -13,7 +13,7 @@ module.exports = (bot, request) => {
       request(`https://api.vk.com/method/wall.getById?posts=${linkToPostSafe}&extended=1&v=5.60`, (error, response, body) => {
         var json = JSON.parse(body);
 
-        if (!error && response.statusCode == 200 && json.response) {
+        if (!error && response.statusCode == 200 && json.response.items[0]) {
           var item = json.response.items[0];
           var date = item.date;
           var isRepost = item.copy_history || 0;
