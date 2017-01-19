@@ -65,7 +65,7 @@ module.exports = (bot, request) => {
             }
 
             // Находим ссылки с ВК-разметкой
-            var regexpMarkDownLinks = /\[([clubid]){0,}([0-9]){0,}\|([\w\sа-яА-ЯёЁ]){0,}\]/g;
+            var regexpMarkDownLinks = /\[([clubid]){0,}([0-9]){0,}\|([\w\sа-яА-ЯёЁ].){0,}\]/g;
             var markdownLinks = text.match(regexpMarkDownLinks);
 
             // Заменяем ссылки в ВК-разметке
