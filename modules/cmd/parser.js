@@ -25,14 +25,16 @@ module.exports = (bot, request) => {
 
           try {
             var text = item.text || item.copy_history[0].text;
-            var group = json.response.groups[0];
-            var groupName = group.name;
-            var groupId = group.id;
-            var ownerPost = `ℹ️ пост из <a href="https://vk.com/club${groupId}">${groupName}</a>\n\n`;
+            var ownerPost = '';
 
             // Проверяем репост
             if (isRepost) {
               var profile = json.response.profiles[0];
+              var group = json.response.groups[0];
+              var groupName = group.name;
+              var groupId = group.id;
+
+              ownerPost = `ℹ️ пост из <a href="https://vk.com/club${groupId}">${groupName}</a>\n\n`;
 
               // Смотрим, кто сделал репост: пользователь или сообщество
               if (profile) {
