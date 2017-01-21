@@ -22,5 +22,6 @@
   "dependencies": {
     "node-telegram-bot-api": "^0.25.0",
     "request": "^2.79.0",
+    "petrovich": "^0.2.1",
   }
 }

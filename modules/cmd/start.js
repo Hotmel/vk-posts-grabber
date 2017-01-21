@@ -1,7 +1,5 @@
-module.exports = (bot) => {
-  var module = {};
-
-  module.cmd = (msg) => {
+var start = (bot) => {
+  return (msg) => {
     var settings = {
       parse_mode: 'HTML'
     };
@@ -11,7 +9,7 @@ module.exports = (bot) => {
                                  'Например, вы даете боту ссылку такого типа: https://vk.com/feed?w=wall-29534144_5332642, а он в ответ вам высылает содержимое этого поста.\n\n' +
                                  'Все последующие сообщения (без использования команд) будут рассматриваться как ссылки, если в тексте сообщения есть <b>vk.com</b> и идентификатор <b>wall</b>.\n\n' +
                                  'Наберите /help для справки.', settings);
-  };
-
-  return module;
+  }
 };
+
+module.exports = start;

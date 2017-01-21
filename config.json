@@ -1,3 +1,4 @@
 {
-  "token": ""
+  "token": "TOKEN_FOR_TELEGRAM",
+  "VKtoken": "TOKEN_FOR_VK"
 }

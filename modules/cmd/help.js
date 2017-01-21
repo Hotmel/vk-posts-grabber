@@ -1,7 +1,5 @@
-module.exports = (bot) => {
-  var module = {};
-
-  module.cmd = (msg) => {
+var help = (bot) => {
+  return (msg) => {
     var settings = {
       parse_mode: 'markdown'
     };
@@ -12,7 +10,7 @@ module.exports = (bot) => {
                                  '— Все сообщения (не считая команд) бот воспринимает как ссылки и пытается их спарсить;\n' +
                                  '— Доступные команды: /start, /help;\n' +
                                  '— При возникновении каких-либо вопросов пишите разработчику (@bifot).' , settings);
-  };
-
-  return module;
+  }
 };
+
+module.exports = help;
