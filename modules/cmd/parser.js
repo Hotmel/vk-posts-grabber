@@ -17,7 +17,7 @@ var parser = (bot, request, config, petrovich) => {
       request(`https://api.vk.com/method/wall.getById?posts=${linkToPostSafe}&extended=1&access_token=${config.VKtoken}&v=5.60`, (error, response, body) => {
         var json = JSON.parse(body);
 
-        if (!error && response.statusCode == 200 && json.response.items[0]) {
+        if (!error && response.statusCode == 200 && json.response) {
           var item = json.response.items[0];
           var text = item.text;
           var isRepost = item.copy_history;
