@@ -1,4 +1,5 @@
 {
-  "token": "TOKEN_FOR_TELEGRAM",
-  "VKtoken": "TOKEN_FOR_VK"
+  "token": "TELEGRAM_TOKEN",
+  "VKtoken": "VK_TOKEN",
+  "urlDb": "mongodb://localhost:27017/repost"
 }

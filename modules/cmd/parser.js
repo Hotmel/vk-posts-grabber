@@ -1,23 +1,46 @@
+const TelegramBot = require('node-telegram-bot-api');
+const request = require('request');
+const mongoose = require('mongoose');
+const petrovich = require('petrovich');
+const config = require('../../config');
+
+const telegramToken = config.token;
+const vkToken = config.VKtoken;
+const urlDb = config.urlDb;
+
+const bot = new TelegramBot(telegramToken, { polling: false });
+
 const addText = require('../extra/addText')();
 const isRepost = require('../extra/isRepost')();
 const markDownLinks = require('../extra/markDownLinks')();
 const crop = require('../extra/crop')();
 const attachments = require('../attachments/attachments')();
 
-var parser = (bot, request, config, petrovich) => {
-  return (msg) => {
+var Parser = () => {
+  return (msg, id) => {
+    var originalMessage;
+    var userID;
+    var condition;
+
+    if (msg.text && msg.from.id) {
+      originalMessage = msg.text;
+      userID = msg.from.id;
+    } else {
+      originalMessage = msg;
+      userID = id;
+    }
+
     // Если это ссылка на пост, работаем с ней,
     // если какое-то другое сообщение, говорим, что не понимаем    
-    if (msg.text.search('vk.com') != -1 && msg.text.search('wall') != -1) {
-      var url = msg.text;
-      var linkToPost = url.split('&')[0]; // Отделяем от других аргументов
-      var linkToPostSafe = linkToPost.substr(linkToPost.search('wall') + 4); // Обрезаем, чтоб оставались только owner & item ID
+    if (originalMessage.search('vk.com') != -1 && originalMessage.search('wall') != -1) {
+      var url = originalMessage;
+      var linkToPost = url.split('wall')[1].split('%')[0];
 
       // Делаем запрос к записи
-      request(`https://api.vk.com/method/wall.getById?posts=${linkToPostSafe}&extended=1&access_token=${config.VKtoken}&v=5.60`, (error, response, body) => {
+      request(`https://api.vk.com/method/wall.getById?posts=${linkToPost}&extended=1&v=5.60`, (error, response, body) => {
         var json = JSON.parse(body);
 
-        if (!error && response.statusCode == 200 && json.response) {
+        if (!error && response.statusCode == 200 && json.response.items[0]) {
           var item = json.response.items[0];
           var text = item.text;
           var isRepost = item.copy_history;
@@ -48,7 +71,7 @@ var parser = (bot, request, config, petrovich) => {
             // Если сообщение маленькое, отправляем сразу полное,
             // если >4096 символов, то кусками
             if (_message) {
-              bot.sendMessage(msg.from.id, _message, settings)
+              bot.sendMessage(userID, _message, settings)
                 .then(body => {
                   resolve('Отправили <4096 символов.');
                 });
@@ -58,10 +81,10 @@ var parser = (bot, request, config, petrovich) => {
               };
 
               partOfText.forEach(text => {
-                bot.sendMessage(msg.from.id, text, settings);
+                bot.sendMessage(userID, text, settings);
               });
 
-              resolve('SEND');
+              resolve('Отправлено сообщение по частям.');
             }
           });
 
@@ -73,23 +96,23 @@ var parser = (bot, request, config, petrovich) => {
                     parse_mode: 'markdown'
                   };
 
-                  bot.sendMessage(msg.from.id, `*Приложенная статья:*\n\n${linksToAttachments[attach]}`, settings);
+                  bot.sendMessage(userID, `*Приложенная статья:*\n\n${linksToAttachments[attach]}`, settings);
                 } else if (attach.search('photo') != -1) {
                   // Таймаут, чтоб фотография загружалась после приложения типа «Страница»
-                  setTimeout(() => bot.sendPhoto(msg.from.id, linksToAttachments[attach]), 500);
+                  setTimeout(() => bot.sendPhoto(userID, linksToAttachments[attach]), 500);
                 } else if (attach.search('doc') != -1) {
-                  bot.sendDocument(msg.from.id, linksToAttachments[attach])
+                  bot.sendDocument(userID, linksToAttachments[attach])
                 }
               });
             });
         } else {
-          bot.sendMessage(msg.from.id, 'Пост не найден.'); // Сделали запрос, пост не найден или произошла ошибка
+          bot.sendMessage(userID, 'Пост не найден.'); // Сделали запрос, пост не найден или произошла ошибка
         }
       });
     } else {
-      bot.sendMessage(msg.from.id, 'Бот вас не понял.'); // Если пользователь ввел не ссылку
+      bot.sendMessage(userID, 'Бот вас не понял.'); // Если пользователь ввел не ссылку
     }
   }
 };
 
-module.exports = parser;
+module.exports = Parser;

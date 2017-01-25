@@ -1,4 +1,4 @@
-var isRepost_ = () => {
+var IsRepost = () => {
   return (isRepost, json, item, text) => {
     if (isRepost) {
       var profile = json.response.profiles[0];
@@ -38,4 +38,4 @@ var isRepost_ = () => {
   }
 };
 
-module.exports = isRepost_;
+module.exports = IsRepost;

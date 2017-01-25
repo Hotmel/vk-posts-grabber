@@ -1,4 +1,4 @@
-var AddText_ = () => {
+var AddText = () => {
   return (profile, groups, text, isRepost, petrovich) => {
     // Смотрим автора поста
     if (profile) {
@@ -44,4 +44,4 @@ var AddText_ = () => {
   }
 };
 
-module.exports = AddText_;
+module.exports = AddText;

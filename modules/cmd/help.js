@@ -1,4 +1,9 @@
-var help = (bot) => {
+const TelegramBot = require('node-telegram-bot-api');
+const config = require('../../config');
+const telegramToken = config.token;
+const bot = new TelegramBot(telegramToken, { polling: false });
+
+var Help = () => {
   return (msg) => {
     var settings = {
       parse_mode: 'markdown'
@@ -13,4 +18,4 @@ var help = (bot) => {
   }
 };
 
-module.exports = help;
+module.exports = Help;

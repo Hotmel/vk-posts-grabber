@@ -1,7 +1,7 @@
-var MarkdownLinks_ = () => {
+var MarkdownLinks = () => {
   return () => {
     // Находим ссылки с ВК-разметкой
-    var regexpMarkDownLinks = /\[([clubid]){0,}([0-9]){0,}\|.([\w\sа-яА-ЯёЁ]){0,}.\S{0,}\]/g;
+    var regexpMarkDownLinks = /\[([clubid]){0,}([0-9]){0,}\|.([\w\sа-яА-ЯёЁ.]){0,}.\S{0,}\]/g;
     var markdownLinks = _message.match(regexpMarkDownLinks);
 
     // Заменяем ссылки в ВК-разметке
@@ -17,4 +17,4 @@ var MarkdownLinks_ = () => {
   }
 };
 
-module.exports = MarkdownLinks_;
+module.exports = MarkdownLinks;
