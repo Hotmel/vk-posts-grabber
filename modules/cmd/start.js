@@ -29,11 +29,12 @@ var start = (msg) => {
 
     var data = {
       id: msg.from.id,
+      vk_id: user_id,
       hash: hash
     };
 
     Users.find(data.id, (err, results) => {
-      if (results[0].id == msg.from.id) {
+      if (results[0] && results[0].id == msg.from.id) {
         Users.update(data.id, data, err => {
           if (err) {
             console.log(err);

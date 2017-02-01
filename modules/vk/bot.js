@@ -68,7 +68,7 @@ const startLongPoll = () => {
 
         if (message ==  '/start') {
           const hash = md5(String(new Date().getTime()) + String(random(1111111111111, 99999999999999)));
-          
+
           sendMessage(user_id, 'Привет, вы запустили бота для ретрансляции постов из ВК в телеграм!\n\n' +
                                `Ваша уникальная ссылка для авторизации в бота телеграм: t.me/postsgrabberbot?start=${hash}_user_id=${user_id}`);
         } else if (message == '/help') {
@@ -76,7 +76,7 @@ const startLongPoll = () => {
         } else {
           mongoose.connect(config.url_database);
 
-          Users.find({}, (err, results) => {
+          Users.find({ vk_id: user_id }, (err, results) => {
             if (results[0]) {
               parser(results[0].id, message, post);
               sendMessage(user_id, 'Отправлено в телеграм.');
