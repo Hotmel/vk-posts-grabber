@@ -7,8 +7,6 @@ const random = require('../commons/random');
 const sendMessage = require('./sendMessage');
 const parser = require('../cmd/parser');
 
-const hash = md5(String(new Date().getTime()) + String(random(1111111111111, 99999999999999)));
-
 var longPollParams = {};
 
 const getLongPollParams = () => {
@@ -69,6 +67,8 @@ const startLongPoll = () => {
         var post = update[7].attach1;
 
         if (message ==  '/start') {
+          const hash = md5(String(new Date().getTime()) + String(random(1111111111111, 99999999999999)));
+          
           sendMessage(user_id, 'Привет, вы запустили бота для ретрансляции постов из ВК в телеграм!\n\n' +
                                `Ваша уникальная ссылка для авторизации в бота телеграм: t.me/postsgrabberbot?start=${hash}_user_id=${user_id}`);
         } else if (message == '/help') {

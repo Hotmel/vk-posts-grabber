@@ -33,7 +33,7 @@ var start = (msg) => {
     };
 
     Users.find(data.id, (err, results) => {
-      if (results[0]) {
+      if (results[0].id == msg.from.id) {
         Users.update(data.id, data, err => {
           if (err) {
             console.log(err);
