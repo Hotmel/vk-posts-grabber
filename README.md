@@ -4,9 +4,8 @@
 
 Проект находится в рабочем режиме и им можно пользоваться.
 
-**Telegram:** [@PostsGrabberBot](https://t.me/postsgrabberbot)
-
-**VK:** [https://vk.me/vkpostsgrabber](https://vk.me/vkpostsgrabber)
+- **Telegram:** [@PostsGrabberBot](https://t.me/postsgrabberbot)
+- **VK:** [https://vk.me/vkpostsgrabber](https://vk.me/vkpostsgrabber)
 
 ## Установка
 
@@ -22,7 +21,7 @@ $ node app.js
 Чтобы полноценно использовать бота, вам понадобится два токена: Telegram Bot & VK Token.
 
 - Получить Telegram TOKEN легко, достаточно создать бота, обратившись к [@BotFather](https://t.me/botfather);
-- VK Token можно получить через [авторизацию](https://vk.cc/5ZaXHu) в приложении. Разрешаете доступ, потом в адресной строке ищем токен. Все, что идет от **#access_token=** до **&expires_in** является токеном.
+- VK Token можно получить в настройках сообщества.
 
 **Пример токена:** b4f62ec4e26098a4efd157a155b01230cc466355277d48df2317b0597d43fa36fb0b694bc50f6496a516c.
 
