@@ -1,8 +1,11 @@
 # VK Posts Grabber
 
-Ретрансляция постов из ВКонтакте в Telegram. Теперь заходить в ВК вовсе не обязательно, все в любимом телеграме!
+Ретрансляция постов из ВКонтакте в Telegram.
 
-Бот находится в рабочем режиме и им можно пользоваться. **Логин бота: @PostsGrabberBot**
+Проект находится в рабочем режиме и им можно пользоваться.
+
+**Telegram: @PostsGrabberBot**
+**VK:** [https://vk.me/vkpostsgrabber](https://vk.me/vkpostsgrabber)
 
 ## Установка
 
@@ -26,8 +29,8 @@ $ node app.js
 
 ```javascript
 {
-  "token": "123124161:asASDAFweVAWEQFWEFsdY",
-  "VKtoken": "123ASDVA132g1dgsdfg123SDa12g31absdf1"
+  "telegram_token": "123124161:asASDAFweVAWEQFWEFsdY",
+  "vk_token": "123ASDVA132g1dgsdfg123SDa12g31absdf1"
 }
 ```
 _________

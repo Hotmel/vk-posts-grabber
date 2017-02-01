@@ -2,90 +2,62 @@ const TelegramBot = require('node-telegram-bot-api');
 const request = require('request');
 const mongoose = require('mongoose');
 const config = require('../../config');
+const Users = require('../db/users_model');
+const sendMessage = require('../vk/sendMessage');
 
-const telegramToken = config.token;
-const urlDb = config.urlDb;
+const bot = new TelegramBot(config.telegram_token, { polling: false });
 
-const bot = new TelegramBot(telegramToken, { polling: false });
+var start = (msg) => {
+  var hash = msg.text.split(' ')[1].split('_user_id=')[0];
+  var user_id = msg.text.split(' ')[1].split('_user_id=')[1];
+  var hashRegexp = /[a-z-0-9]{32}/g;
 
-var Start = () => {
-  return (msg) => {
-    var hash = msg.text.split(' ')[1];
-    var hashRegexp = /[a-z-0-9]{32}/g;
+  var settings = {
+    parse_mode: 'HTML'
+  };
 
-    var settings = {
-      parse_mode: 'HTML'
+  var message = `<b>Привет, ${msg.from.first_name}!</b>\n\n` +
+                'Это бот для репоста постов из ВКонакте в Telegram.\n\n' +
+                'Например, вы даете боту ссылку такого типа: https://vk.com/feed?w=wall-29534144_5332642, а он в ответ вам высылает содержимое этого поста.\n\n' +
+                'Все последующие сообщения (без использования команд) будут рассматриваться как ссылки, если в тексте сообщения есть <b>vk.com</b> и идентификатор <b>wall</b>.\n\n' +
+                'Наберите /help для справки.';
+
+  if (hash && hashRegexp.test(hash)) {
+    mongoose.connect(config.url_database);
+
+    var data = {
+      id: msg.from.id,
+      hash: hash
     };
 
-    var message = `<b>Привет, ${msg.from.first_name}!</b>\n\n` +
-                  'Это бот для репоста постов из ВКонакте в Telegram.\n\n' +
-                  'Например, вы даете боту ссылку такого типа: https://vk.com/feed?w=wall-29534144_5332642, а он в ответ вам высылает содержимое этого поста.\n\n' +
-                  'Все последующие сообщения (без использования команд) будут рассматриваться как ссылки, если в тексте сообщения есть <b>vk.com</b> и идентификатор <b>wall</b>.\n\n' +
-                  'Наберите /help для справки.';
+    Users.find(data.id, (err, results) => {
+      if (results[0]) {
+        Users.update(data.id, data, err => {
+          if (err) {
+            console.log(err);
+          }
+        });
 
-    if (hash && hashRegexp.test(hash)) {
-      mongoose.connect(urlDb);
+        sendMessage(user_id, 'Вы успешно авторизовались.');
+      } else {
+        var new_user = new Users(data);
 
-      var usersSchema = mongoose.Schema({
-        id: Number,
-        hash: {
-          type: String,
-          unique: true
-        }
-      });
+        new_user.save(err => {
+          if (err) {
+            console.log(err);
+          }
+        });
 
-      var Users = mongoose.model('users', usersSchema);
-      var hash = new Users({ id: msg.from.id, hash: hash });
+        sendMessage(user_id, 'Вы успешно авторизовались.');
+      }
+    });
 
-      console.log(hash);
-
-      mongoose.connection.close();
-
-      // MongoClient.connect(urlDb, (err, db) => {
-      //   assert.equal(null, err);
-
-      //   var ids = db.collection('ids');
-      //   var id = {};
-      //       id[msg.from.id] = msg.from.username;
-
-      //   var users = db.collection('users');
-      //   var user = {};
-      //       user.id = msg.from.id;
-      //       user.hash = hash;
-
-      //   users.insert(user, { unique: true }, (err, results) => {
-      //     if (!err && results.result.ok) {
-      //       console.log('Пользователь (id & hash) успешно записан.');
-      //     } else {
-      //       users.update({ id: msg.from.id }, { $set: { hash: hash } }, { upsert: true}, (err, results) => {
-      //         console.log('Перезаписали.')
-      //       });
-      //     }
-      //   });
-      // });
-    } else {
-      // MongoClient.connect(urlDb, (err, db) => {
-      //   assert.equal(null, err);
-
-      //   var ids = db.collection('ids');
-      //   var id = {};
-      //       id.id = msg.from.id;
-
-      //   ids.insert(id, { unique: true }, (err, results) => {
-      //     if (!err && results.result.ok) {
-      //       console.log('Пользователь (only id) успешно записан.');
-      //     } else {
-      //       console.log(err);
-      //     }
-      //   });
-      // });
-
-      message += '\n\n<b>Внимание! Для работы в связке ВК-Телеграм необходимо авторизоваться в боте, используя хэш. Получить его можно у бота по</b> <a href="https://vk.com/id383224823">ссылке</a><b>, написав ему «Старт».</b>';
-    }
-
-
-    bot.sendMessage(msg.from.id, message, settings);
+    mongoose.connection.close();
+  } else {
+    message += '\n\n<b>Внимание! Для работы в связке ВК-Телеграм необходимо авторизоваться в боте, используя хэш. Получить его можно у бота по</b> <a href="https://vk.com/id383224823">ссылке</a><b>, написав ему «Старт».</b>';
   }
+
+  bot.sendMessage(msg.from.id, message, settings);
 };
 
-module.exports = Start;
+module.exports = start;

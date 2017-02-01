@@ -1,12 +1,10 @@
 {
   "name": "postsgrabber",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Ретрансляция постов из ВК в Телеграм.",
   "main": "app.js",
   "dependencies": {
-    "assert": "^1.4.1",
     "md5": "^2.2.1",
-    "mongodb": "^2.2.21",
     "mongoose": "^4.7.8",
     "node-telegram-bot-api": "^0.26.0",
     "petrovich": "^0.2.1",
