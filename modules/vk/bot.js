@@ -69,10 +69,10 @@ const startLongPoll = () => {
         var post = update[7].attach1;
 
         if (message ==  '/start') {
-          sendMessage(user_id, 'Привет, ты запустил бота для рентрансляции постов из ВК в Телеграм!\n\n' +
+          sendMessage(user_id, 'Привет, вы запустили бота для ретрансляции постов из ВК в телеграм!\n\n' +
                                `Ваша уникальная ссылка для авторизации в бота телеграм: t.me/postsgrabberbot?start=${hash}_user_id=${user_id}`);
         } else if (message == '/help') {
-          sendMessage(user_id, 'Это бот для рентрансляции постов из ВК в телеграм. Для начала работы вам нужно авторизоваться в боте для телеграм. Наберите /start, чтобы получить ссылку.');
+          sendMessage(user_id, 'Это бот для ретрансляции постов из ВК в телеграм. Для начала работы вам нужно авторизоваться в боте для телеграм. Наберите /start, чтобы получить ссылку.');
         } else {
           mongoose.connect(config.url_database);
 
