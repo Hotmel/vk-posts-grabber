@@ -1,7 +1,7 @@
 var addText = (profile, groups, text, isRepost, petrovich) => {
   // Смотрим автора поста
   if (profile) {
-    var gender = 1 ? 'female' : 'male';
+    var gender = 1 ? 'male' : 'female';
 
     var person = {
       gender: gender,
@@ -10,6 +10,7 @@ var addText = (profile, groups, text, isRepost, petrovich) => {
     };
 
     var name = `${petrovich(person, 'genitive').first} ${petrovich(person, 'genitive').last}`;
+
     var userId = profile.id;
     var linkToUser = `<a href="https://vk.com/${userId}">${name}</a>`;
     var spaces = (text) ? '\n\n' : ''; // Добавляем отступы после текста, если он есть

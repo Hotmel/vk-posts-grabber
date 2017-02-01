@@ -9,17 +9,19 @@ const page = require('./page');
 const doc = require('./doc');
 
 const attachments = (item, isRepost, linksToAttachments) => {
-  var attachments = item.attachments || isRepost[0].attachments;
+  var attachments = item.attachments || isRepost && isRepost[0].attachments;
 
-  attachments.forEach((attach, i) => {
-    photo(attach, linksToAttachments, i);
-    link(attach);
-    video(attach);
-    audio(attach);
-    poll(attach);
-    page(attach, config, request, linksToAttachments, i);
-    doc(attach, linksToAttachments, i);
-  });
+  if (attachments) {
+    attachments.forEach((attach, i) => {
+      photo(attach, linksToAttachments, i);
+      link(attach);
+      video(attach);
+      audio(attach);
+      poll(attach);
+      page(attach, config, request, linksToAttachments, i);
+      doc(attach, linksToAttachments, i);
+    });
+  }
 };
 
 module.exports = attachments;
