@@ -4,7 +4,8 @@
 
 Проект находится в рабочем режиме и им можно пользоваться.
 
-**Telegram: @PostsGrabberBot**
+**Telegram:** [@PostsGrabberBot](https://t.me/postsgrabberbot)
+
 **VK:** [https://vk.me/vkpostsgrabber](https://vk.me/vkpostsgrabber)
 
 ## Установка
