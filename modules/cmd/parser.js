@@ -12,7 +12,7 @@ const attachments = require('../attachments/attachments');
 const bot = new TelegramBot(config.telegram_token, { polling: false });
 
 var parser = (id, msg, attach) => {
-  var originalMessage = msg.text || msg;
+  var originalMessage = msg || msg.text;
   var userID = id || msg.from.id;
 
   // Если это ссылка на пост, работаем с ней,
