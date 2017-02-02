@@ -49,7 +49,7 @@ var start = (msg) => {
     'Все последующие сообщения (без использования команд) будут рассматриваться как ссылки, если в тексте сообщения есть <b>vk.com</b> и идентификатор <b>wall</b>.\n\n' +
     'Наберите /help для справки.';
 
-  if (hash && hashRegexp.test(hash)) {
+  if (hash && hashRegexp.test(hash) && user_id) {
     var data = {
       id: msg.from.id,
       vk_id: user_id,
