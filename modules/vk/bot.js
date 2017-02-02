@@ -77,9 +77,8 @@ const startLongPoll = () => {
           mongoose.connect(config.url_database);
 
           Users.find({ vk_id: user_id }, (err, results) => {
-            if (results[0]) {
-              parser(results[0].id, message, post);
-              sendMessage(user_id, 'Отправлено в телеграм.');
+            if (results[0] && results[0].id) {
+              parser(results[0].id, message, post, user_id);
             } else {
               sendMessage(user_id, 'Вы не авторизованы у бота. Наберите /start, чтобы получить дальнейшие указания.');
             }

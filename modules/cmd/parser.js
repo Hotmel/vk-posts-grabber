@@ -8,10 +8,11 @@ const isRepost = require('../extra/isRepost');
 const markDownLinks = require('../extra/markDownLinks');
 const crop = require('../extra/crop');
 const attachments = require('../attachments/attachments');
+const sendMessage = require('../vk/sendMessage');
 
 const bot = new TelegramBot(config.telegram_token, { polling: false });
 
-var parser = (id, msg, attach) => {
+var parser = (id, msg, attach, user_vk) => {
   var originalMessage = msg || msg.text;
   var userID = id || msg.from.id;
 
@@ -70,6 +71,8 @@ var parser = (id, msg, attach) => {
 
             resolve('Отправлено сообщение по частям.');
           }
+
+          sendMessage(user_vk, 'Пост отправлен.');
         });
 
         sendPost.then(body => {
@@ -89,11 +92,17 @@ var parser = (id, msg, attach) => {
           });
         });
       } else {
-        bot.sendMessage(userID, 'Пост не найден.'); // Сделали запрос, пост не найден или произошла ошибка
+        var err = 'Пост не найден.';
+
+        bot.sendMessage(userID, err); // Сделали запрос, пост не найден или произошла ошибка
+        sendMessage(user_vk, err); // Для ВК
       }
     });
   } else {
-    bot.sendMessage(userID, 'Бот вас не понял. Вероятно, вы не ввели ссылку или не прикрепили пост.'); // Если пользователь ввел не ссылку
+    var err = 'Бот вас не понял. Вероятно, вы не ввели ссылку или не прикрепили пост.';
+
+    bot.sendMessage(userID, err); // Если пользователь не ввел ссылку
+    sendMessage(user_vk, err); // Для В
   }
 };
 
