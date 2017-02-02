@@ -4,8 +4,6 @@ const start = require('./modules/cmd/start');
 const help = require('./modules/cmd/help');
 const parser = require('./modules/cmd/parser');
 const vkbot = require('./modules/vk/bot');
-const mongoose = require('mongoose');
-const Users = require('./modules/db/users_model');
 
 const bot = new TelegramBot(config.telegram_token, { polling: true });
 
