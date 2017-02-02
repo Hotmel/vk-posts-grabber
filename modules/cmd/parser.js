@@ -12,22 +12,12 @@ const attachments = require('../attachments/attachments');
 const bot = new TelegramBot(config.telegram_token, { polling: false });
 
 var parser = (id, msg, attach) => {
-  var originalMessage;
-  var userID;
-
-  if (typeof msg == 'object') {
-    originalMessage = msg.text;
-    userID = msg.from.id;
-  } else {
-    originalMessage = msg;
-    userID = id;
-  }
-
-  var condition = attach || originalMessage.search('vk.com') != -1 && originalMessage.search('wall') != -1;
+  var originalMessage = msg.text || msg;
+  var userID = id || msg.from.id;
 
   // Если это ссылка на пост, работаем с ней,
   // если какое-то другое сообщение, говорим, что не понимаем    
-  if (condition) {
+  if (attach || originalMessage.search('vk.com') != -1 && originalMessage.search('wall') != -1) {
     var linkToPost = attach || originalMessage.split('wall')[1].split('%')[0];
 
     // Делаем запрос к записи
