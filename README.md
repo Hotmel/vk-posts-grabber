@@ -13,17 +13,17 @@
 $ git clone https://github.com/bifot/VKPostsGrabber
 $ cd VKPostsGrabber
 $ npm install
-$ node app.js
+$ mongod --dbpath path-to-your-db
 ```
+
+Далее вам нужно настроить бота для корректной работы, получив токены.
 
 ## Настройка
 
 Чтобы полноценно использовать бота, вам понадобится два токена: Telegram Bot & VK Token.
 
-- Получить Telegram TOKEN легко, достаточно создать бота, обратившись к [@BotFather](https://t.me/botfather);
-- VK Token можно получить в настройках сообщества.
-
-**Пример токена:** b4f62ec4e26098a4efd157a155b01230cc466355277d48df2317b0597d43fa36fb0b694bc50f6496a516c.
+- Telegram Token нужно получить у [@BotFather](https://t.me/botfather), создав нового бота или взяв токен уже существующего;
+- VK Token нужно получить в настройках сообщества, подробнее можно прочитать в [официальной документации ВК](https://vk.com/dev/bizmessages_doc).
 
 Токены нужно записать в файл **config.json**:
 
