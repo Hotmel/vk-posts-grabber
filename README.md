@@ -33,6 +33,14 @@ $ mongod --dbpath path-to-your-db
   "vk_token": "123ASDVA132g1dgsdfg123SDa12g31absdf1"
 }
 ```
+
+## Запуск
+
+Запуск бота осуществляется командой:
+
+```
+$ npm start
+```
 _________
   
 *Сделано с любовью, автор: [Михаил Семин](http://bifot.ru).*
