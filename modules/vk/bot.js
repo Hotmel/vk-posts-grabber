@@ -64,8 +64,16 @@ const startLongPoll = () => {
 
         var user_id = update[3];
         var message = update[6].toLowerCase();
-        var post = update[7].attach1;
+        var post;
 
+        if (update[7].attach1_type == 'wall') {
+          post = update[7].attach1;
+        } else if (update[7].fwd) {
+          sendMessage(user_id, 'Бот пока что не поддерживает пересланные сообщения. :(');
+          startLongPoll();
+          return;
+        }
+        
         if (message ==  '/start') {
           const hash = md5(String(new Date().getTime()) + String(random(1111111111111, 99999999999999)));
 

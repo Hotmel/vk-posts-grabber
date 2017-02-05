@@ -13,7 +13,7 @@ const sendMessage = require('../vk/sendMessage');
 const bot = new TelegramBot(config.telegram_token, { polling: false });
 
 var parser = (id, msg, attach, user_vk) => {
-  var originalMessage = msg || msg.text || 'https://vk.com/wall-138512400_5';
+  var originalMessage = msg.text || msg || 'https://vk.com/wall-138512400_5';
   var userID = id || msg.from.id;
 
   // Если это ссылка на пост, работаем с ней,

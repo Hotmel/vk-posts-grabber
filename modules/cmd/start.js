@@ -30,6 +30,8 @@ var start = (msg) => {
       }
     });
 
+    sendMessage(data.vk_id, 'Авторизация прошла успешно.');
+
     mongoose.connection.close();
   };
 
