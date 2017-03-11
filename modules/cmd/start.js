@@ -1,71 +1,41 @@
-const TelegramBot = require('node-telegram-bot-api');
-const request = require('request');
-const mongoose = require('mongoose');
-const config = require('../../config');
-const Users = require('../db/users_model');
-const NewUsers = require('../db/newUsers_model');
-const sendMessage = require('../vk/sendMessage');
+import { Extra, Markdown } from 'Telegraf';
+import '../db/base.js';
 
-const bot = new TelegramBot(config.telegram_token, { polling: false });
+module.exports = ctx => {
+  var message = '<b>Привет!</b>\n\nЭто бот для ретрансляции постов из ВКонакте в Telegram.\n\nНапример, вы даете боту ссылку такого типа: https://vk.com/feed?w=wall-29534144_5332642, а он в ответ вам высылает содержимое этого поста.\n\nВсе последующие сообщения (без использования команд) будут рассматриваться как ссылки, если в тексте сообщения есть <b>vk.com</b> и идентификатор <b>wall</b>.\n\nЕсли нужна помощь, наберите /help.';
 
-var start = (msg) => {
-  const writeUnique = (url_db, collection, search, data) => {
-    mongoose.connect(url_db);
+  if (ctx.message.text.split('?hash=')[1]) {
+    var hash = ctx.message.text.split('?hash=')[1].split('&uid=')[0];
+    var uid = ctx.message.text.split('&uid=')[1];
 
-    collection.find(search, (err, results) => {
-      if (results[0] && results[0].id == msg.from.id) {
-        collection.update(search, data, err => {
-          if (err) {
-            console.log(err);
-          }
-        });
-      } else {
-        var new_user = new collection(data);
-
-        new_user.save(err => {
-          if (err) {
-            console.log(err);
-          }
-        });
-      }
-    });
-
-    sendMessage(data.vk_id, 'Авторизация прошла успешно.');
-
-    mongoose.connection.close();
-  };
-
-  if (msg.text != '/start') {
-    var hash = msg.text.split(' ')[1].split('_user_id=')[0];
-    var user_id = msg.text.split(' ')[1].split('_user_id=')[1];
-    var hashRegexp = /[a-z-0-9]{32}/g;
-  }
-
-  var settings = {
-    parse_mode: 'HTML'
-  };
-
-  var message = `<b>Привет!</b>\n\n` +
-    'Это бот для репоста постов из ВКонакте в Telegram.\n\n' +
-    'Например, вы даете боту ссылку такого типа: https://vk.com/feed?w=wall-29534144_5332642, а он в ответ вам высылает содержимое этого поста.\n\n' +
-    'Все последующие сообщения (без использования команд) будут рассматриваться как ссылки, если в тексте сообщения есть <b>vk.com</b> и идентификатор <b>wall</b>.\n\n' +
-    'Наберите /help для справки.';
-
-  if (hash && hashRegexp.test(hash) && user_id) {
     var data = {
-      id: msg.from.id,
-      vk_id: user_id,
+      tgId: ctx.from.id,
+      vkId: uid,
       hash: hash
     };
 
-    writeUnique(config.url_database, Users, { id: data.id }, data);
-  } else {
-    writeUnique(config.url_database, NewUsers, { id: msg.from.id }, { id: msg.from.id });
+    db.users.find({ tgId: ctx.from.id }).then(response => {
+      if (response[0]) {
+        db.users.update({ tgId: ctx.from.id }, data).then(console.log).catch(console.log);
 
-    message += '\n\n<b>Внимание! Для работы в связке ВК-Телеграм необходимо авторизоваться в боте, используя хэш. Получить его можно у бота по</b> <a href="https://vk.com/id383224823">ссылке</a><b>, написав ему /start.</b>';
+        console.log('Need update!');
+      } else {
+        db.users(data).save().catch(console.log);
+      }
+    });
+  } else {
+    var data = {
+      tgId: ctx.from.id
+    };
+
+    db.users.find(data).then(response => {
+      if (!response[0]) {
+        db.users(data).save().catch(console.log);
+      }
+    });
+
+    message += '\n\n<b>Внимание! Для использования бота в связке ВКонтакте и Телеграм нужно авторизоваться в боте. Просто напишите</b> <a href="http://bifot.ru">боту ВКонтакте</a><b>.</b>';
   }
 
-  bot.sendMessage(msg.from.id, message, settings);
+  ctx.reply(message, Extra.HTML());
 };
-
-module.exports = start;

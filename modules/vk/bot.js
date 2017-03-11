@@ -1,15 +1,15 @@
-const rp = require('request-promise');
-const mongoose = require('mongoose');
-const md5 = require('md5');
-const config = require('../../config');
-const Users = require('../db/users_model');
-const random = require('../commons/random');
-const sendMessage = require('./sendMessage');
-const parser = require('../cmd/parser');
+var rp = require('request-promise');
+var mongoose = require('mongoose');
+var md5 = require('md5');
+var config = require('../../config');
+var Users = require('../db/users_model');
+var random = require('../commons/random');
+var sendMessage = require('./sendMessage');
+var parser = require('../cmd/parser');
 
 var longPollParams = {};
 
-const getLongPollParams = () => {
+var getLongPollParams = () => {
   var options = {
     uri: `https://api.vk.com/method/messages.getLongPollServer?need_pts=1&access_token=${config.vk_token}&v=5.62`,
     json: true
@@ -24,7 +24,7 @@ const getLongPollParams = () => {
     .catch(e => console.log(e));
 };
 
-const startLongPoll = () => {
+var startLongPoll = () => {
   var options = {
     uri: `https://${longPollParams.server}?act=a_check&key=${longPollParams.key}&ts=${longPollParams.ts}&wait=25&mode=2&version=1`,
     json: true
@@ -75,7 +75,7 @@ const startLongPoll = () => {
         }
         
         if (message ==  '/start') {
-          const hash = md5(String(new Date().getTime()) + String(random(1111111111111, 99999999999999)));
+          var hash = md5(String(new Date().getTime()) + String(random(1111111111111, 99999999999999)));
 
           sendMessage(user_id, 'Привет, вы запустили бота для ретрансляции постов из ВК в телеграм!\n\n' +
                                `Ваша уникальная ссылка для авторизации в бота телеграм: t.me/postsgrabberbot?start=${hash}_user_id=${user_id}`);

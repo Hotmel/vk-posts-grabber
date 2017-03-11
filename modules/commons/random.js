@@ -1,4 +1,4 @@
-const random = (min, max) => {
+var random = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 

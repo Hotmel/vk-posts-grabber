@@ -1,5 +1,8 @@
 {
-  "telegram_token": "TELEGRAM TOKEN IS HERE",
-  "vk_token": "AND VK IS HERE",
-  "url_database": "mongodb://localhost:27017/repost"
+  "telegram_token": "",
+  "vk_token": "",
+  "group_token": "",
+  "group_id": 0,
+  "confirmation_code": "",
+  "db_url": "mongodb://localhost:27017/repost"
 }

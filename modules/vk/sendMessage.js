@@ -1,7 +1,7 @@
-const rp = require('request-promise');
-const config = require('../../config');
+var rp = require('request-promise');
+var config = require('../../config');
 
-const sendMessage = (user_id, message) => {
+var sendMessage = (user_id, message) => {
   var options = {
     uri: `https://api.vk.com/method/messages.send?user_id=${user_id}&message=${encodeURIComponent(message)}&access_token=${config.vk_token}&v=5.62`,
     json: true
